@@ -2,15 +2,15 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const Database = require('better-sqlite3');
-
+const fs = require('fs'); 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'directeur';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'change-me';
 const SESSION_SECRET = process.env.SESSION_SECRET || 'change-me-in-production';
-
-const db = new Database(path.join(__dirname, 'data', 'fehsa.db'));
-db.pragma('journal_mode = WAL');
+const dataDir = path.join(__dirname, 'data');
+if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, {recursive: true});
+const db = new Database(path.join(__dirname, 'data', 'fesha.db')); 
 db.exec(`CREATE TABLE IF NOT EXISTS registrations (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   first_name TEXT NOT NULL,
